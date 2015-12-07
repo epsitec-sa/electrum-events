@@ -56,7 +56,7 @@ describe ('EventHandlers', () => {
       expect (bus).to.have.property ('_count', 1);
       expect (bus).to.have.property ('_props', emptyProps);
       expect (bus).to.have.property ('_value', 'x');
-      expect (bus).to.have.property ('_states').deep.equal ([]);
+      expect (bus).to.have.property ('_states').deep.equal ([{from: 0, to: 0}]);
     });
   });
 });

@@ -1,5 +1,7 @@
 'use strict';
 
+import getTextSelection from 'electrum-utils/src/get-text-selection.js';
+
 /******************************************************************************/
 
 export default class EventHandlers {
@@ -44,6 +46,8 @@ export default class EventHandlers {
     this.notify (ev, e => this.processChangeEvent (e));
   }
 
+/* private methods */
+
   notify (ev, handler) {
     if (ev.hasOwnProperty ('target')) {
       handler (ev);
@@ -51,10 +55,11 @@ export default class EventHandlers {
   }
 
   processChangeEvent (ev) {
-    const value = ev.target.value;
     const bus = this.bus;
     if (bus && 'notify' in bus) {
-      bus.notify (this._props, value /* states */);
+      const target = ev.target;
+      const states = getTextSelection (target);
+      bus.notify (this._props, target.value, states);
     }
   }
 
