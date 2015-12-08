@@ -5,13 +5,14 @@ import getTextSelection from 'electrum-utils/src/get-text-selection.js';
 /******************************************************************************/
 
 export default class EventHandlers {
-  constructor (props, bus) {
+  constructor (props, bus, valueGetter) {
     this._props = props;
     if (typeof bus === 'function') {
       this._busGetter = bus;
     } else {
       this._busGetter = () => bus;
     }
+    this._valueGetter = valueGetter || (target => target.value);
   }
 
   get props () {
@@ -51,7 +52,7 @@ export default class EventHandlers {
   }
 
   static inject (obj, props, bus) {
-    const eh = new EventHandlers (props, bus);
+    const eh = new EventHandlers (props, bus, obj.getValue && (target => obj.getValue (target)));
     /* jshint expr: true */
     const existingOnFocus    = obj.onFocus;
     const existingOnChange   = obj.onChange;
@@ -99,7 +100,7 @@ export default class EventHandlers {
     if (bus && 'notify' in bus) {
       const target = ev.target;
       const states = getTextSelection (target);
-      bus.notify (this._props, target.value, states);
+      bus.notify (this._props, this._valueGetter (target), states);
     }
   }
 
