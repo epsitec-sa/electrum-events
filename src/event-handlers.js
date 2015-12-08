@@ -42,8 +42,48 @@ export default class EventHandlers {
     this.notify (ev, e => this.processChangeEvent (e));
   }
 
+  handleKeyPress (ev) {
+    this.notify (ev, e => this.processChangeEvent (e));
+  }
+
   handleSelect (ev) {
     this.notify (ev, e => this.processChangeEvent (e));
+  }
+
+  static inject (obj, props, bus) {
+    const eh = new EventHandlers (props, bus);
+    /* jshint expr: true */
+    const existingOnFocus    = obj.onFocus;
+    const existingOnChange   = obj.onChange;
+    const existingOnKeyDown  = obj.onKeyDown;
+    const existingOnKeyPress = obj.onKeyPress;
+    const existingOnKeyUp    = obj.onKeyUp;
+    const existingOnSelect   = obj.onSelect;
+
+    obj.onFocus = e => {
+      existingOnFocus && existingOnFocus.call (obj, e);
+      eh.handleFocus (e);
+    };
+    obj.onChange = e => {
+      existingOnChange && existingOnChange.call (obj, e);
+      eh.handleChange (e);
+    };
+    obj.onKeyDown = e => {
+      existingOnKeyDown && existingOnKeyDown.call (obj, e);
+      eh.handleKeyDown (e);
+    };
+    obj.onKeyUp = e => {
+      existingOnKeyUp && existingOnKeyUp.call (obj, e);
+      eh.handleKeyUp (e);
+    };
+    obj.onKeyPress = e => {
+      existingOnKeyPress && existingOnKeyPress.call (obj, e);
+      eh.handleKeyPress (e);
+    };
+    obj.onSelect = e => {
+      existingOnSelect && existingOnSelect.call (obj, e);
+      eh.handleSelect (e);
+    };
   }
 
 /* private methods */
