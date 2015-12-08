@@ -52,7 +52,7 @@ describe ('EventHandlers', () => {
     it ('invokes bus.notify()', () => {
       const bus = new Bus ();
       const eh = new EventHandlers (emptyProps, bus);
-      eh.handleKeyDown ({target: {value: 'x'}});
+      eh.handleKeyDown ({target: {value: 'x', nodeName: 'INPUT', nodeType: 1}});
       expect (bus).to.have.property ('_count', 1);
       expect (bus).to.have.property ('_props', emptyProps);
       expect (bus).to.have.property ('_value', 'x');

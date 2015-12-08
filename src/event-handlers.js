@@ -4,15 +4,27 @@ import getTextSelection from 'electrum-utils/src/get-text-selection.js';
 
 /******************************************************************************/
 
+function getStates (target) {
+  if (target && target.nodeName === 'INPUT') {
+    return [getTextSelection (target)];
+  } else {
+    return [];
+  }
+}
+
+/******************************************************************************/
+
 export default class EventHandlers {
-  constructor (props, bus, valueGetter) {
+  constructor (props, bus) {
     this._props = props;
+    this._valueGetter  = target => target.value;
+    this._statesGetter = target => getStates (target);
+
     if (typeof bus === 'function') {
       this._busGetter = bus;
     } else {
       this._busGetter = () => bus;
     }
-    this._valueGetter = valueGetter || (target => target.value);
   }
 
   get props () {
@@ -52,8 +64,15 @@ export default class EventHandlers {
   }
 
   static inject (obj, props, bus) {
-    const eh = new EventHandlers (props, bus, obj.getValue && (target => obj.getValue (target)));
-    /* jshint expr: true */
+    const eh = new EventHandlers (props, bus);
+
+    if (obj.getValue) {
+      eh._valueGetter = target => obj.getValue (target);
+    }
+    if (obj.getStates) {
+      eh._statesGetter = target => obj.getStates (target);
+    }
+
     const existingOnFocus    = obj.onFocus;
     const existingOnChange   = obj.onChange;
     const existingOnKeyDown  = obj.onKeyDown;
@@ -61,27 +80,27 @@ export default class EventHandlers {
     const existingOnKeyUp    = obj.onKeyUp;
     const existingOnSelect   = obj.onSelect;
 
-    obj.onFocus = e => {
+    obj.onFocus = e => {  /* jshint expr: true */
       existingOnFocus && existingOnFocus.call (obj, e);
       eh.handleFocus (e);
     };
-    obj.onChange = e => {
+    obj.onChange = e => {  /* jshint expr: true */
       existingOnChange && existingOnChange.call (obj, e);
       eh.handleChange (e);
     };
-    obj.onKeyDown = e => {
+    obj.onKeyDown = e => {  /* jshint expr: true */
       existingOnKeyDown && existingOnKeyDown.call (obj, e);
       eh.handleKeyDown (e);
     };
-    obj.onKeyUp = e => {
+    obj.onKeyUp = e => {  /* jshint expr: true */
       existingOnKeyUp && existingOnKeyUp.call (obj, e);
       eh.handleKeyUp (e);
     };
-    obj.onKeyPress = e => {
+    obj.onKeyPress = e => {  /* jshint expr: true */
       existingOnKeyPress && existingOnKeyPress.call (obj, e);
       eh.handleKeyPress (e);
     };
-    obj.onSelect = e => {
+    obj.onSelect = e => {  /* jshint expr: true */
       existingOnSelect && existingOnSelect.call (obj, e);
       eh.handleSelect (e);
     };
@@ -99,8 +118,7 @@ export default class EventHandlers {
     const bus = this.bus;
     if (bus && 'notify' in bus) {
       const target = ev.target;
-      const states = getTextSelection (target);
-      bus.notify (this._props, this._valueGetter (target), states);
+      bus.notify (this._props, this._valueGetter (target), ...this._statesGetter (target));
     }
   }
 
