@@ -8,11 +8,12 @@ import EventHandlers from '../event-handlers.js';
 
 const emptyProps = {};
 const emptyBus = {};
+const emptyObj = {props: emptyProps};
 
 describe ('EventHandlers', () => {
   describe ('constructor()', () => {
     it ('creates an instance', () => {
-      const eh = new EventHandlers (emptyProps);
+      const eh = new EventHandlers (emptyObj);
       expect (eh).to.exist ();
       expect (eh).to.have.property ('props', emptyProps);
       expect (eh).to.have.property ('bus', undefined);
@@ -22,7 +23,7 @@ describe ('EventHandlers', () => {
   describe ('bus', () => {
     it ('calls bus call-back', () => {
       let busCalled = 0;
-      const eh = new EventHandlers (emptyProps, () => (busCalled++, emptyBus));
+      const eh = new EventHandlers (emptyObj, () => (busCalled++, emptyBus));
       expect (busCalled).to.equal (0);
       expect (eh).to.have.property ('bus', emptyBus);
       expect (busCalled).to.equal (1);
@@ -44,14 +45,14 @@ describe ('EventHandlers', () => {
 
     it ('does not invoke bus.notify() when event has no target', () => {
       const bus = new Bus ();
-      const eh = new EventHandlers (emptyProps, bus);
+      const eh = new EventHandlers (emptyObj, bus);
       eh.handleKeyDown ({});
       expect (bus).to.have.property ('_count', 0);
     });
 
     it ('invokes bus.notify()', () => {
       const bus = new Bus ();
-      const eh = new EventHandlers (emptyProps, bus);
+      const eh = new EventHandlers (emptyObj, bus);
       eh.handleKeyDown ({target: {value: 'x', nodeName: 'INPUT', nodeType: 1}});
       expect (bus).to.have.property ('_count', 1);
       expect (bus).to.have.property ('_props', emptyProps);

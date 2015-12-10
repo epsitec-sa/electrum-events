@@ -15,8 +15,8 @@ function getStates (target) {
 /******************************************************************************/
 
 export default class EventHandlers {
-  constructor (props, bus) {
-    this._props = props;
+  constructor (obj, bus) {
+    this._obj = obj;
     this._valueGetter  = target => target.value;
     this._statesGetter = target => getStates (target);
 
@@ -28,11 +28,11 @@ export default class EventHandlers {
   }
 
   get props () {
-    return this._props;
+    return this._obj.props;
   }
 
   get bus () {
-    return this._busGetter (this._props);
+    return this._busGetter (this.props);
   }
 
   handleFocus (ev) {
@@ -63,8 +63,8 @@ export default class EventHandlers {
     this.notify (ev, e => this.processChangeEvent (e));
   }
 
-  static inject (obj, props, bus) {
-    const eh = new EventHandlers (props, bus);
+  static inject (obj, bus) {
+    const eh = new EventHandlers (obj, bus);
 
     if (obj.getValue) {
       eh._valueGetter = target => obj.getValue (target);
@@ -118,14 +118,14 @@ export default class EventHandlers {
     const bus = this.bus;
     if (bus && 'notify' in bus) {
       const target = ev.target;
-      bus.notify (this._props, this._valueGetter (target), ...this._statesGetter (target));
+      bus.notify (this.props, this._valueGetter (target), ...this._statesGetter (target));
     }
   }
 
   processFocusEvent () {
     const bus = this.bus;
     if (bus && 'dispatch' in bus) {
-      bus.dispatch (this._props, 'focus');
+      bus.dispatch (this.props, 'focus');
     }
   }
 }
