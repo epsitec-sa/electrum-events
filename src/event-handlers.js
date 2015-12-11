@@ -120,6 +120,8 @@ export default class EventHandlers {
       existingOnSelect && existingOnSelect.call (obj, e);
       eh.handleSelect (e);
     };
+
+    return eh;
   }
 
 /* private methods */
