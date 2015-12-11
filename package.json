@@ -1,6 +1,6 @@
 {
   "name": "electrum-events",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "Electrum Events forwards web component events to the bus.",
   "main": "lib/index.js",
   "scripts": {

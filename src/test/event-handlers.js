@@ -117,6 +117,17 @@ describe ('EventHandlers', () => {
       expect (bus).to.have.property ('_value', 'x');
       expect (bus).to.have.property ('_states').deep.equal ([{from: 0, to: 0}]);
     });
+
+    it ('with debug function logs event', () => {
+      const bus = new Bus ();
+      const eh = new EventHandlers (emptyObj, bus);
+      const ev = new Event ();
+      let log = '';
+      eh.debug = (s, e) => log = `${s}: ${e.target.value}`;
+      ev.target = {value: 'x', nodeName: 'INPUT', nodeType: 1};
+      eh.handleKeyDown (ev);
+      expect (log).to.equal ('key-down: x');
+    });
   });
 });
 

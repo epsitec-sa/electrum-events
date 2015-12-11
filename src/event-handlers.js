@@ -35,32 +35,48 @@ export default class EventHandlers {
     return this._busGetter (this.props);
   }
 
+  get debug () {
+    return !!this._debug;
+  }
+
+  set debug (value) {
+    this._debug = value;
+  }
+
+  getValue (target) {
+    return this._valueGetter (target);
+  }
+
+  getStates (target) {
+    return this._statesGetter (target);
+  }
+
   handleFocus (ev) {
-    this.notify (ev, e => this.processChangeEvent (e));
-    this.notify (ev, e => this.processFocusEvent (e));
+    this.notify (ev, e => this.processChangeEvent (e, 'focus'));
+    this.notify (ev, e => this.processFocusEvent (e, 'focus'));
     ev.stopPropagation ();
   }
 
   handleChange (ev) {
-    this.notify (ev, e => this.processChangeEvent (e));
+    this.notify (ev, e => this.processChangeEvent (e, 'change'));
     ev.stopPropagation ();
     ev.preventDefault ();
   }
 
   handleKeyDown (ev) {
-    this.notify (ev, e => this.processChangeEvent (e));
+    this.notify (ev, e => this.processChangeEvent (e, 'key-down'));
   }
 
   handleKeyUp (ev) {
-    this.notify (ev, e => this.processChangeEvent (e));
+    this.notify (ev, e => this.processChangeEvent (e, 'key-up'));
   }
 
   handleKeyPress (ev) {
-    this.notify (ev, e => this.processChangeEvent (e));
+    this.notify (ev, e => this.processChangeEvent (e, 'key-press'));
   }
 
   handleSelect (ev) {
-    this.notify (ev, e => this.processChangeEvent (e));
+    this.notify (ev, e => this.processChangeEvent (e, 'select'));
   }
 
   static inject (obj, bus) {
@@ -114,18 +130,30 @@ export default class EventHandlers {
     }
   }
 
-  processChangeEvent (ev) {
+  processChangeEvent (ev, source) {
+    this.log (ev, source);
     const bus = this.bus;
     if (bus && 'notify' in bus) {
       const target = ev.target;
-      bus.notify (this.props, this._valueGetter (target), ...this._statesGetter (target));
+      bus.notify (this.props, this.getValue (target), ...this.getStates (target));
     }
   }
 
-  processFocusEvent () {
+  processFocusEvent (ev, source) {
+    this.log (ev, source);
     const bus = this.bus;
     if (bus && 'dispatch' in bus) {
       bus.dispatch (this.props, 'focus');
+    }
+  }
+
+  log (ev, source) {
+    if (this.debug) {
+      if (typeof this._debug === 'function') {
+        this._debug (source, ev);
+      } else {
+        console.log (`${source}: %O`, ev);
+      }
     }
   }
 }
