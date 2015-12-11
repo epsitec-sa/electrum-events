@@ -11,7 +11,7 @@ handlers needed by React web components:
 
 * `handleFocus`
 * `handleChange`
-* `handleKeyDown` and `handleKeyUp`
+* `handleKeyDown`, `handleKeyUp` and `handleKeyPress`
 * `handleSelect`
 
 Events are of two categories:
@@ -20,3 +20,20 @@ Events are of two categories:
   They are sent with the `bus.notify()` function.
 * Events which trigger an action (focus, button click).  
   They are sent with the `bus.dispatch()` function.
+
+# Debug with active logging
+
+Class `EventHandlers` has a property `debug` which can be set to log
+events to the console, which may prove convenient to better understand
+what happens.
+
+For customized logging, set `debug` to a function:
+
+```javascript
+const eh = new EventHandlers (obj, bus);
+eh.debug = (source, event) => { /* ... */ };
+```
+
+The `source` argument will be one of `focus`, `change`, `key-down`,
+`key-up`, `key-press` and `select`, while the `event` property gives
+full access to the event being processed.
