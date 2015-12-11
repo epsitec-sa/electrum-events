@@ -2,7 +2,7 @@
 
 [![NPM version](https://img.shields.io/npm/v/electrum-events.svg)](https://www.npmjs.com/package/electrum-events)
 [![Build Status](https://travis-ci.org/epsitec-sa/electrum-events.svg?branch=master)](https://travis-ci.org/epsitec-sa/electrum-events)
-[![Build status](https://ci.appveyor.com/api/projects/status/8c6nooep3fbnoytc?svg=true)](https://ci.appveyor.com/project/epsitec/electrum-events)
+[![Build status](https://ci.appveyor.com/api/projects/status/0kuudrbhwiunp0k0?svg=true)](https://ci.appveyor.com/project/epsitec/electrum-events)
 
 The `electrum-events` module forwards web component events to the bus.
 
