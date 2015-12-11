@@ -21,6 +21,38 @@ Events are of two categories:
 * Events which trigger an action (focus, button click).  
   They are sent with the `bus.dispatch()` function.
 
+# Using EventHandlers
+
+Usually, you won't use `EventHandlers` yourself. It is Electrum's
+responsibility to _inject_ the handlers into wrapped components.
+This is handled by Electrum's `InjectingMiddleware`:
+
+```javascript
+class Electrum {
+  ...
+  reset () {
+    ...
+    this._injectingMiddleware = new InjectingMiddleware ();
+    this._injectingMiddleware.register ('events', obj => {
+      obj._eventHandlers = EventHandlers.inject (obj, () => this.bus);
+    });
+    ...
+  }
+}
+```
+
+The instance of the event handlers class attached to a component
+can be accessed through `obj._eventHandlers`. This might be useful
+when debugging (see below).
+
+# EventHandlers properties
+
+Every event handlers instance provides the following public properties:
+
+* `component` &rarr; the component to which the handlers are attached.
+* `props` &rarr; the properties of the component.
+* `bus` &rarr; the bus to which the events will be sent.
+
 # Debug with active logging
 
 Class `EventHandlers` has a property `debug` which can be set to log
@@ -31,9 +63,10 @@ For customized logging, set `debug` to a function:
 
 ```javascript
 const eh = new EventHandlers (obj, bus);
-eh.debug = (source, event) => { /* ... */ };
+eh.debug = (component, source, event) => { /* ... */ };
 ```
 
-The `source` argument will be one of `focus`, `change`, `key-down`,
-`key-up`, `key-press` and `select`, while the `event` property gives
-full access to the event being processed.
+The `component` argument refers to the component on which the event
+was notified. The `source` argument is one of `focus`, `change`,
+`key-down`, `key-up`, `key-press` and `select`, while the `event`
+argument gives full access to the event being processed.

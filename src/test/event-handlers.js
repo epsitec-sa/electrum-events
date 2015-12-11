@@ -19,6 +19,14 @@ describe ('EventHandlers', () => {
       expect (eh).to.exist ();
       expect (eh).to.have.property ('props', emptyProps);
       expect (eh).to.have.property ('bus', undefined);
+      expect (eh).to.have.property ('component', emptyObj);
+    });
+
+    it ('attaches EventHandlers to component', () => {
+      delete emptyObj._eventHandlers;
+      expect (emptyObj._eventHandlers).to.be.undefined ();
+      const eh = new EventHandlers (emptyObj);
+      expect (emptyObj._eventHandlers).to.equal (eh);
     });
   });
 
@@ -123,7 +131,10 @@ describe ('EventHandlers', () => {
       const eh = new EventHandlers (emptyObj, bus);
       const ev = new Event ();
       let log = '';
-      eh.debug = (s, e) => log = `${s}: ${e.target.value}`;
+      eh.debug = (c, s, e) => {
+        expect (c).to.equal (emptyObj);
+        log = `${s}: ${e.target.value}`;
+      };
       ev.target = {value: 'x', nodeName: 'INPUT', nodeType: 1};
       eh.handleKeyDown (ev);
       expect (log).to.equal ('key-down: x');

@@ -19,12 +19,17 @@ export default class EventHandlers {
     this._obj = obj;
     this._valueGetter  = target => target.value;
     this._statesGetter = target => getStates (target);
+    this._obj._eventHandlers = this;
 
     if (typeof bus === 'function') {
       this._busGetter = bus;
     } else {
       this._busGetter = () => bus;
     }
+  }
+
+  get component () {
+    return this._obj;
   }
 
   get props () {
@@ -152,7 +157,7 @@ export default class EventHandlers {
   log (ev, source) {
     if (this.debug) {
       if (typeof this._debug === 'function') {
-        this._debug (source, ev);
+        this._debug (this.component, source, ev);
       } else {
         console.log (`${source}: %O`, ev);
       }
