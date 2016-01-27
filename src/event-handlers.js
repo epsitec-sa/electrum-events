@@ -56,32 +56,38 @@ export default class EventHandlers {
     return this._statesGetter (target);
   }
 
+
+  handleClick (ev) {
+    this.notify (ev, e => this.forwardDispatchEvent (e, 'action'));
+    ev.stopPropagation ();
+  }
+
   handleFocus (ev) {
-    this.notify (ev, e => this.processChangeEvent (e, 'focus'));
-    this.notify (ev, e => this.processFocusEvent (e, 'focus'));
+    this.notify (ev, e => this.forwardNotifyEvent (e, 'focus'));
+    this.notify (ev, e => this.forwardDispatchEvent (e, 'focus'));
     ev.stopPropagation ();
   }
 
   handleChange (ev) {
-    this.notify (ev, e => this.processChangeEvent (e, 'change'));
+    this.notify (ev, e => this.forwardNotifyEvent (e, 'change'));
     ev.stopPropagation ();
     ev.preventDefault ();
   }
 
   handleKeyDown (ev) {
-    this.notify (ev, e => this.processChangeEvent (e, 'key-down'));
+    this.notify (ev, e => this.forwardNotifyEvent (e, 'key-down'));
   }
 
   handleKeyUp (ev) {
-    this.notify (ev, e => this.processChangeEvent (e, 'key-up'));
+    this.notify (ev, e => this.forwardNotifyEvent (e, 'key-up'));
   }
 
   handleKeyPress (ev) {
-    this.notify (ev, e => this.processChangeEvent (e, 'key-press'));
+    this.notify (ev, e => this.forwardNotifyEvent (e, 'key-press'));
   }
 
   handleSelect (ev) {
-    this.notify (ev, e => this.processChangeEvent (e, 'select'));
+    this.notify (ev, e => this.forwardNotifyEvent (e, 'select'));
   }
 
   static inject (obj, bus) {
@@ -100,10 +106,15 @@ export default class EventHandlers {
     const existingOnKeyPress = obj.onKeyPress;
     const existingOnKeyUp    = obj.onKeyUp;
     const existingOnSelect   = obj.onSelect;
+    const existingOnClick    = obj.onClick;
 
     obj.onFocus = e => {  /* jshint expr: true */
       existingOnFocus && existingOnFocus.call (obj, e);
       eh.handleFocus (e);
+    };
+    obj.onClick = e => {  /* jshint expr: true */
+      existingOnClick && existingOnClick.call (obj, e);
+      eh.handleClick (e);
     };
     obj.onChange = e => {  /* jshint expr: true */
       existingOnChange && existingOnChange.call (obj, e);
@@ -137,7 +148,7 @@ export default class EventHandlers {
     }
   }
 
-  processChangeEvent (ev, source) {
+  forwardNotifyEvent (ev, source) {
     this.log (ev, source);
     const bus = this.bus;
     if (bus && 'notify' in bus) {
@@ -146,11 +157,11 @@ export default class EventHandlers {
     }
   }
 
-  processFocusEvent (ev, source) {
+  forwardDispatchEvent (ev, source) {
     this.log (ev, source);
     const bus = this.bus;
     if (bus && 'dispatch' in bus) {
-      bus.dispatch (this.props, 'focus');
+      bus.dispatch (this.props, source);
     }
   }
 
