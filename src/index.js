@@ -1,3 +1,5 @@
 'use strict';
 
-export {default as EventHandlers} from './event-handlers.js';
+import EventHandlers from './event-handlers.js';
+
+export {EventHandlers};

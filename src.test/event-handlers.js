@@ -2,7 +2,7 @@
 
 import {expect} from 'mai-chai';
 
-import EventHandlers from '../event-handlers.js';
+import {EventHandlers} from 'electrum-events';
 import Bus from './dummy-bus.js';
 import Event from './dummy-event.js';
 
