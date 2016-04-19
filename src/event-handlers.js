@@ -153,7 +153,7 @@ export default class EventHandlers {
     const bus = this.bus;
     if (bus && 'notify' in bus) {
       const target = ev.target;
-      bus.notify (this.props, this.getValue (target), ...this.getStates (target));
+      bus.notify (this.props, source, this.getValue (target), ...this.getStates (target));
     }
   }
 
