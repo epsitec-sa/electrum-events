@@ -4,7 +4,7 @@ export default class Bus {
   constructor () {
     this._count = 0;
   }
-  notify (props, value, ...states) {
+  notify (props, source, value, ...states) {
     this._count++;
     this._props = props;
     this._value = value;
