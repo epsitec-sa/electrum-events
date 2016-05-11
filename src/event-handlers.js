@@ -148,12 +148,12 @@ export default class EventHandlers {
     }
   }
 
-  forwardNotifyEvent (ev, source) {
-    this.log (ev, source);
+  forwardNotifyEvent (event, type) {
+    this.log (event, type);
     const bus = this.bus;
     if (bus && 'notify' in bus) {
-      const target = ev.target;
-      bus.notify (this.props, source, this.getValue (target), ...this.getStates (target));
+      const target = event.target;
+      bus.notify (this.props, {event, type}, this.getValue (target), ...this.getStates (target));
     }
   }
 
