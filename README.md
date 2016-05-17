@@ -9,7 +9,7 @@ The `electrum-events` module forwards web component events to the bus.
 The `EventHandlers` class provides implementations for the various event
 handlers needed by React web components:
 
-* `handleFocus`
+* `handleBlur` and `handleFocus`
 * `handleChange`
 * `handleKeyDown`, `handleKeyUp` and `handleKeyPress`
 * `handleSelect`
@@ -18,7 +18,7 @@ Events are of two categories:
 
 * Events which modify a value (change, key up/down, select).  
   They are sent with the `bus.notify()` function.
-* Events which trigger an action (focus, button click).  
+* Events which trigger an action (focus, defocus, button click).  
   They are sent with the `bus.dispatch()` function.
 
 # Using EventHandlers

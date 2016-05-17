@@ -62,6 +62,12 @@ export default class EventHandlers {
     ev.stopPropagation ();
   }
 
+  handleBlur (ev) {
+    this.notify (ev, e => this.forwardNotifyEvent (e, 'defocus'));
+    this.notify (ev, e => this.forwardDispatchEvent (e, 'defocus'));
+    ev.stopPropagation ();
+  }
+
   handleFocus (ev) {
     this.notify (ev, e => this.forwardNotifyEvent (e, 'focus'));
     this.notify (ev, e => this.forwardDispatchEvent (e, 'focus'));
@@ -100,6 +106,7 @@ export default class EventHandlers {
       eh._statesGetter = target => obj.getStates (target);
     }
 
+    const existingOnBlur     = obj.onBlur;
     const existingOnFocus    = obj.onFocus;
     const existingOnChange   = obj.onChange;
     const existingOnKeyDown  = obj.onKeyDown;
@@ -108,39 +115,58 @@ export default class EventHandlers {
     const existingOnSelect   = obj.onSelect;
     const existingOnClick    = obj.onClick;
 
-    obj.onFocus = e => {  /* jshint expr: true */
-      existingOnFocus && existingOnFocus.call (obj, e);
-      eh.handleFocus (e);
-    };
-    obj.onClick = e => {  /* jshint expr: true */
-      existingOnClick && existingOnClick.call (obj, e);
-      eh.handleClick (e);
-    };
-    obj.onChange = e => {  /* jshint expr: true */
-      existingOnChange && existingOnChange.call (obj, e);
-      eh.handleChange (e);
-    };
-    obj.onKeyDown = e => {  /* jshint expr: true */
-      existingOnKeyDown && existingOnKeyDown.call (obj, e);
-      eh.handleKeyDown (e);
-    };
-    obj.onKeyUp = e => {  /* jshint expr: true */
-      existingOnKeyUp && existingOnKeyUp.call (obj, e);
-      eh.handleKeyUp (e);
-    };
-    obj.onKeyPress = e => {  /* jshint expr: true */
-      existingOnKeyPress && existingOnKeyPress.call (obj, e);
-      eh.handleKeyPress (e);
-    };
-    obj.onSelect = e => {  /* jshint expr: true */
-      existingOnSelect && existingOnSelect.call (obj, e);
-      eh.handleSelect (e);
-    };
+    obj.onBlur =
+      e => {  /* jshint expr: true */
+        existingOnBlur && existingOnBlur.call (obj, e);
+        eh.handleBlur (e);
+      };
+
+    obj.onFocus =
+      e => {  /* jshint expr: true */
+        existingOnFocus && existingOnFocus.call (obj, e);
+        eh.handleFocus (e);
+      };
+
+    obj.onClick =
+      e => {  /* jshint expr: true */
+        existingOnClick && existingOnClick.call (obj, e);
+        eh.handleClick (e);
+      };
+
+    obj.onChange =
+      e => {  /* jshint expr: true */
+        existingOnChange && existingOnChange.call (obj, e);
+        eh.handleChange (e);
+      };
+
+    obj.onKeyDown =
+      e => {  /* jshint expr: true */
+        existingOnKeyDown && existingOnKeyDown.call (obj, e);
+        eh.handleKeyDown (e);
+      };
+
+    obj.onKeyUp =
+      e => {  /* jshint expr: true */
+        existingOnKeyUp && existingOnKeyUp.call (obj, e);
+        eh.handleKeyUp (e);
+      };
+
+    obj.onKeyPress =
+      e => {  /* jshint expr: true */
+        existingOnKeyPress && existingOnKeyPress.call (obj, e);
+        eh.handleKeyPress (e);
+      };
+
+    obj.onSelect =
+      e => {  /* jshint expr: true */
+        existingOnSelect && existingOnSelect.call (obj, e);
+        eh.handleSelect (e);
+      };
 
     return eh;
   }
 
-/* private methods */
+  /* private methods */
 
   notify (ev, handler) {
     if (ev.hasOwnProperty ('target')) {
