@@ -2,4 +2,17 @@
 
 import EventHandlers from './event-handlers.js';
 
-export {EventHandlers};
+import {
+  preventGlobalMouseEvents, restoreGlobalMouseEvents,
+  captureMouseEvents
+} from './mouse-capture.js';
+
+/******************************************************************************/
+
+export {
+  EventHandlers,
+  preventGlobalMouseEvents, restoreGlobalMouseEvents,
+  captureMouseEvents
+};
+
+/******************************************************************************/
