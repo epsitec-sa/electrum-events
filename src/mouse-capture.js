@@ -17,8 +17,10 @@ const EventListenerMode = {capture: true};
 class Capture {
   constructor (listeners) {
     this._listeners = listeners || {};
-    document.addEventListener ('mouseup',   this.mouseupListener,   EventListenerMode);
-    document.addEventListener ('mousemove', this.mousemoveListener, EventListenerMode);
+    this._mouseup   = e => this.mouseupListener (e);
+    this._mousemove = e => this.mousemoveListener (e);
+    document.addEventListener ('mouseup',   this._mouseup,   EventListenerMode);
+    document.addEventListener ('mousemove', this._mousemove, EventListenerMode);
     preventGlobalMouseEvents ();
   }
 
@@ -34,8 +36,8 @@ class Capture {
     if (this._listeners.onMouseUp) {
       this._listeners.onMouseUp (e);
     }
-    document.removeEventListener ('mouseup',   this.mouseupListener,   EventListenerMode);
-    document.removeEventListener ('mousemove', this.mousemoveListener, EventListenerMode);
+    document.removeEventListener ('mouseup',   this._mouseup,   EventListenerMode);
+    document.removeEventListener ('mousemove', this._mousemove, EventListenerMode);
     e.stopPropagation ();
   }
 }
