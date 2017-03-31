@@ -1,4 +1,4 @@
-'use strict';
+/* global console */
 
 import getTextSelection from 'electrum-utils/src/get-text-selection.js';
 
