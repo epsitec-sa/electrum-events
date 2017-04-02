@@ -1,9 +1,8 @@
-'use strict';
-
 import EventHandlers from './event-handlers.js';
 
 import {
-  preventGlobalMouseEvents, restoreGlobalMouseEvents,
+  preventGlobalMouseEvents,
+  restoreGlobalMouseEvents,
   captureMouseEvents
 } from './mouse-capture.js';
 

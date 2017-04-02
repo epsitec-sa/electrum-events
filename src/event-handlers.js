@@ -1,12 +1,11 @@
-/* global console */
-
+import {Trace} from 'electrum-trace';
 import getTextSelection from 'electrum-utils/src/get-text-selection.js';
 
 /******************************************************************************/
 
 function getStates (target) {
   if (target && target.nodeName === 'INPUT') {
-    return [getTextSelection (target)];
+    return [ getTextSelection (target) ];
   } else {
     return [];
   }
@@ -196,7 +195,7 @@ export default class EventHandlers {
       if (typeof this._debug === 'function') {
         this._debug (this.component, source, ev);
       } else {
-        console.log (`${source}: %O`, ev);
+        Trace.log (`${source}: %O`, ev);
       }
     }
   }

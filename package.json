@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/epsitec-sa/electrum-events#readme",
   "dependencies": {
+    "electrum-trace": "^1.1.1",
     "electrum-utils": "^1.6.2"
   },
   "devDependencies": {

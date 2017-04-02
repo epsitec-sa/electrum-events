@@ -1,4 +1,4 @@
-'use strict';
+/* global describe it */
 
 import {expect} from 'mai-chai';
 
@@ -58,7 +58,7 @@ describe ('EventHandlers', () => {
       expect (bus).to.have.property ('_count', 2);
       expect (bus).to.have.property ('_props', emptyProps);
       expect (bus).to.have.property ('_value', 'x');
-      expect (bus).to.have.property ('_states').deep.equal ([{from: 0, to: 0}]);
+      expect (bus).to.have.property ('_states').deep.equal ([ {from: 0, to: 0} ]);
       expect (bus).to.have.property ('_message', 'focus');
     });
 
@@ -91,7 +91,7 @@ describe ('EventHandlers', () => {
       expect (bus).to.have.property ('_count', 1);
       expect (bus).to.have.property ('_props', emptyProps);
       expect (bus).to.have.property ('_value', 'x');
-      expect (bus).to.have.property ('_states').deep.equal ([{from: 0, to: 0}]);
+      expect (bus).to.have.property ('_states').deep.equal ([ {from: 0, to: 0} ]);
     });
 
     it ('stops event propagation and prevents default event handling', () => {
@@ -123,7 +123,7 @@ describe ('EventHandlers', () => {
       expect (bus).to.have.property ('_count', 1);
       expect (bus).to.have.property ('_props', emptyProps);
       expect (bus).to.have.property ('_value', 'x');
-      expect (bus).to.have.property ('_states').deep.equal ([{from: 0, to: 0}]);
+      expect (bus).to.have.property ('_states').deep.equal ([ {from: 0, to: 0} ]);
     });
 
     it ('with debug function logs event', () => {

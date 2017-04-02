@@ -1,5 +1,3 @@
-'use strict';
-
 export default class Bus {
   constructor () {
     this._count = 0;
