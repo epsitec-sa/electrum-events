@@ -1,6 +1,6 @@
 {
   "name": "electrum-events",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Electrum Events forwards web component events to the bus.",
   "main": "lib/index.js",
   "scripts": {
@@ -26,8 +26,8 @@
   },
   "homepage": "https://github.com/epsitec-sa/electrum-events#readme",
   "dependencies": {
-    "electrum-trace": "^1.1.1",
-    "electrum-utils": "^1.6.2"
+    "electrum-trace": "^1.1.2",
+    "electrum-utils": "^1.6.7"
   },
   "devDependencies": {
     "babel-env": "^2.3.1",
