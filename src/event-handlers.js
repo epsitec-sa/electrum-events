@@ -1,5 +1,5 @@
 import {Trace} from 'electrum-trace';
-import getTextSelection from 'electrum-utils/src/get-text-selection.js';
+import {getTextSelection} from 'electrum-utils';
 
 /******************************************************************************/
 
