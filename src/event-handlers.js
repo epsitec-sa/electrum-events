@@ -115,49 +115,49 @@ export default class EventHandlers {
     const existingOnClick    = obj.onClick;
 
     obj.onBlur =
-      e => {  /* jshint expr: true */
+      e => {
         existingOnBlur && existingOnBlur.call (obj, e);
         eh.handleBlur (e);
       };
 
     obj.onFocus =
-      e => {  /* jshint expr: true */
+      e => {
         existingOnFocus && existingOnFocus.call (obj, e);
         eh.handleFocus (e);
       };
 
     obj.onClick =
-      e => {  /* jshint expr: true */
+      e => {
         existingOnClick && existingOnClick.call (obj, e);
         eh.handleClick (e);
       };
 
     obj.onChange =
-      e => {  /* jshint expr: true */
+      e => {
         existingOnChange && existingOnChange.call (obj, e);
         eh.handleChange (e);
       };
 
     obj.onKeyDown =
-      e => {  /* jshint expr: true */
+      e => {
         existingOnKeyDown && existingOnKeyDown.call (obj, e);
         eh.handleKeyDown (e);
       };
 
     obj.onKeyUp =
-      e => {  /* jshint expr: true */
+      e => {
         existingOnKeyUp && existingOnKeyUp.call (obj, e);
         eh.handleKeyUp (e);
       };
 
     obj.onKeyPress =
-      e => {  /* jshint expr: true */
+      e => {
         existingOnKeyPress && existingOnKeyPress.call (obj, e);
         eh.handleKeyPress (e);
       };
 
     obj.onSelect =
-      e => {  /* jshint expr: true */
+      e => {
         existingOnSelect && existingOnSelect.call (obj, e);
         eh.handleSelect (e);
       };
